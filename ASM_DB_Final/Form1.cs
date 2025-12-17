@@ -17,7 +17,8 @@ namespace ASM_DB_Final
         public Form1()
         {
             InitializeComponent();
-            conn = new SqlConnection("Server = LAPTOP-GDG92V4B; Database = SE08201_ProductManagement; integrated security = true ");
+           
+            conn = new SqlConnection(@"Server=DESKTOP-TD5V49V\MSSQLSERVER01; Database=SE08201_Bookstore; Integrated Security=True");
         }
 
         private void btnExit_Click(object sender, EventArgs e)
