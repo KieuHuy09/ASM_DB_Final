@@ -13,36 +13,16 @@ namespace ASM_DB_Final
 {
     public partial class WarehouseDashboard : Form
     {
-        // Thay YOUR_SERVER_NAME bằng tên máy chủ SQL của bạn
-        string connectionString = @"Data Source=YOUR_SERVER_NAME;Initial Catalog=FinalDB;Integrated Security=True";
+        string connectionString = @"Server=DESKTOP-TD5V49V\MSSQLSERVER01; Database=SE08201_Bookstore; Integrated Security=True";
 
         public WarehouseDashboard()
         {
             InitializeComponent();
-            StylingInterface(); // Gọi hàm trang trí giao diện
+            LoadWarehouseStats();
         }
 
-        private void WarehouseDashboard_Load(object sender, EventArgs e)
-        {
-            LoadDashboardData();
-        }
 
-        // 1. Hàm trang trí màu sắc cho giống bản vẽ (Dark Mode)
-        void StylingInterface()
-        {
-            this.BackColor = Color.FromArgb(30, 30, 30); // Màu nền tối
-
-            // Chỉnh màu cho GridView
-            dgvWarehouse.BackgroundColor = Color.FromArgb(45, 45, 48);
-            dgvWarehouse.DefaultCellStyle.BackColor = Color.FromArgb(45, 45, 48);
-            dgvWarehouse.DefaultCellStyle.ForeColor = Color.White;
-            dgvWarehouse.ColumnHeadersDefaultCellStyle.BackColor = Color.Black;
-            dgvWarehouse.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dgvWarehouse.EnableHeadersVisualStyles = false;
-        }
-
-        // 2. Hàm tải dữ liệu thống kê và danh sách
-        void LoadDashboardData()
+        private void LoadWarehouseStats()
         {
             try
             {
@@ -50,30 +30,22 @@ namespace ASM_DB_Final
                 {
                     conn.Open();
 
-                    // A. Tính tổng số sách trong kho (Total books in stock)
-                    string queryTotal = "SELECT SUM(Quantity) FROM Books";
-                    SqlCommand cmdTotal = new SqlCommand(queryTotal, conn);
-                    object resultTotal = cmdTotal.ExecuteScalar();
-                    // Nếu null (chưa có sách) thì bằng 0
-                    lblTotalStock.Text = (resultTotal != DBNull.Value) ? resultTotal.ToString() : "0";
+                    // 1. Tính tổng số đầu sách trong kho (Total books in stock)
+                    SqlCommand cmdTotal = new SqlCommand("SELECT COUNT(*) FROM Books", conn);
+                    int totalBooks = (int)cmdTotal.ExecuteScalar();
+                    // Giả sử bạn đặt tên Label/TextBox hiển thị là lblTotalStock
+                    lblTotalStock.Text = totalBooks.ToString();
 
-                    // B. Đếm số sách sắp hết hàng (Almost out of stock)
-                    // Giả sử quy định dưới 10 cuốn là sắp hết
-                    string queryLow = "SELECT COUNT(*) FROM Books WHERE Quantity < 10";
-                    SqlCommand cmdLow = new SqlCommand(queryLow, conn);
-                    int lowCount = (int)cmdLow.ExecuteScalar();
-                    lblLowStock.Text = lowCount.ToString();
+                    // 2. Thống kê sách sắp hết hàng (Almost out of stock)
+                    // Vì bảng không có cột Quantity, ta đếm theo Status = 'Out of Stock'
+                    SqlCommand cmdLow = new SqlCommand("SELECT COUNT(*) FROM Books WHERE Status = 'Out of Stock'", conn);
+                    int lowStock = (int)cmdLow.ExecuteScalar();
+                    lblLowStock.Text = lowStock.ToString();
 
-                    // Đổi màu cảnh báo nếu có sách sắp hết
-                    if (lowCount > 0) lblLowStock.ForeColor = Color.Red;
-                    else lblLowStock.ForeColor = Color.LightGreen;
-
-                    // C. Hiển thị bảng "What to do" (Danh sách các sách cần nhập thêm)
-                    // Chỉ hiện những sách có Quantity < 10
-                    string queryGrid = "SELECT BookID AS [Code], Title AS [Book Name], Quantity FROM Books WHERE Quantity < 10";
-                    SqlDataAdapter adapter = new SqlDataAdapter(queryGrid, conn);
+                    // 3. Hiển thị danh sách kho hàng lên DataGridView
+                    SqlDataAdapter da = new SqlDataAdapter("SELECT BookID, Title, Price, Status, PublishYear FROM Books", conn);
                     DataTable dt = new DataTable();
-                    adapter.Fill(dt);
+                    da.Fill(dt);
                     dgvWarehouse.DataSource = dt;
                 }
             }
@@ -82,14 +54,7 @@ namespace ASM_DB_Final
                 MessageBox.Show("Lỗi tải dữ liệu kho: " + ex.Message);
             }
         }
-
-        // Nút Refresh (hoặc nút Overview trong menu) để tải lại dữ liệu
-        private void btnOverview_Click(object sender, EventArgs e)
-        {
-            LoadDashboardData();
-        }
-
-        // Nút Enter Stock (Nhập kho - Chức năng mở rộng)
+        
         private void btnEnter_Click(object sender, EventArgs e)
         {
             // Logic: Bạn có thể mở một form nhỏ để nhập thêm số lượng cho sách
@@ -97,10 +62,33 @@ namespace ASM_DB_Final
             MessageBox.Show("Tính năng nhập kho (Update Quantity) sẽ được phát triển ở Form nhập liệu!");
         }
 
-        // Nút Exit
-        private void btnExit_Click(object sender, EventArgs e)
+        
+        
+
+        private void btnOverview_Click_1(object sender, EventArgs e)
         {
-            this.Close();
+            
+            MessageBox.Show("Đã cập nhật số liệu thống kê mới nhất!");
+        }
+
+        private void btnWarehouse_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Đang mở danh sách kho chi tiết...");
+        }
+
+        private void btnEnter_Click_1(object sender, EventArgs e)
+        {
+            Product_Management pm = new Product_Management();
+            pm.ShowDialog();
+            LoadWarehouseStats();
+        }
+
+        private void btnExit_Click_1(object sender, EventArgs e)
+        {
+            AdminDashboard cusForm = new AdminDashboard();
+            this.Hide();
+            cusForm.ShowDialog();
+            this.Show();
         }
     }
 }

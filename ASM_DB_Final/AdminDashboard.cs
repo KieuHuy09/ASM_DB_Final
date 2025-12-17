@@ -22,6 +22,11 @@ namespace ASM_DB_Final
             this.currentRole = role;
         }
 
+        public AdminDashboard()
+        {
+            InitializeComponent();
+        }
+
         // Sự kiện khi Form Main tải lên
         private void Main_Load(object sender, EventArgs e)
         {
@@ -29,55 +34,17 @@ namespace ASM_DB_Final
             // Nếu là Staff (Nhân viên), ẩn chức năng quản lý User (vì Use Case Manage User chỉ nối với Admin)
             if (currentRole == "Staff")
             {
-                btnUserManagement.Enabled = false; // Hoặc .Visible = false để ẩn luôn
+                //btnAuthorManagement.Enabled = false; // Hoặc .Visible = false để ẩn luôn
             }
 
             // Hiển thị tên người dùng hoặc quyền hạn lên tiêu đề form (Optional)
             this.Text = "Hệ thống quản lý nhà sách - Xin chào: " + currentRole;
         }
 
-        // 1. Nút USER MANAGEMENT (Quản lý nhân viên)
-        // Mở form Employee Management.cs (Trong code là Employee_Management)
-        private void btnUserManagement_Click(object sender, EventArgs e)
-        {
-            User_Management empForm = new User_Management();
-            this.Hide();
-            empForm.ShowDialog();
-            this.Show();
-        }
+        
 
-        // 2. Nút PRODUCT MANAGEMENT (Quản lý sách)
-        // Mở form Product Management.cs
-        private void btnProductManagement_Click(object sender, EventArgs e)
-        {
-            Form1 proForm = new Form1();
-            this.Hide();
-            proForm.ShowDialog();
-            this.Show();
-        }
-
-        // 3. Nút CUSTOMER MANAGEMENT (Quản lý khách hàng)
-        // Mở form Customer Management.cs
-        private void btnCustomerMgt_Click(object sender, EventArgs e)
-        {
-            Customer_Management cusForm = new Customer_Management();
-            this.Hide();
-            cusForm.ShowDialog();
-            this.Show();
-        }
-
-        // 4. Nút AUTHORS MANAGEMENT (Quản lý tác giả)
-        // Hiện tại chưa có file Form này trong Solution Explorer của bạn
-        private void btnAuthorMgt_Click(object sender, EventArgs e)
-        {
-            // Khi nào bạn tạo xong form AuthorManagement thì mở comment dòng dưới ra:
-            // AuthorManagement auForm = new AuthorManagement();
-            // this.Hide();
-            // auForm.ShowDialog();
-            // this.Show();
-
-            MessageBox.Show("Chức năng đang phát triển (Bạn cần tạo thêm Form AuthorManagement)!", "Thông báo");
-        }
+        
+        
 
         // 5. Nút LOGOUT (Đăng xuất)
         private void btnLogout_Click(object sender, EventArgs e)
@@ -96,6 +63,49 @@ namespace ASM_DB_Final
         private void btnDashboard_Click(object sender, EventArgs e)
         {
             Dashboard cusForm = new Dashboard();
+            this.Hide();
+            cusForm.ShowDialog();
+            this.Show();
+        }
+
+        private void btnUserManagement_Click_1(object sender, EventArgs e)
+        {
+            User_Management empForm = new User_Management();
+            this.Hide();
+            empForm.ShowDialog();
+            this.Show();
+        }
+
+        private void btnAuthorsManagement_Click(object sender, EventArgs e)
+        {
+
+
+            Author_Management empForm = new Author_Management();
+            this.Hide();
+            empForm.ShowDialog();
+            this.Show();
+        }
+
+        private void btnCustomerManagement_Click(object sender, EventArgs e)
+        {
+            Customer_Management cusForm = new Customer_Management();
+            this.Hide();
+            cusForm.ShowDialog();
+            this.Show();
+        }
+
+        private void btnProductManagement_Click_1(object sender, EventArgs e)
+        {
+            Product_Management cusForm = new Product_Management();
+            this.Hide();
+            cusForm.ShowDialog();
+            this.Show();
+        }
+
+        private void btnLogout_Click_1(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Bạn có muốn đăng xuất");
+            Form1 cusForm = new Form1();
             this.Hide();
             cusForm.ShowDialog();
             this.Show();

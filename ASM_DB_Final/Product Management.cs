@@ -12,18 +12,20 @@ using System.Windows.Forms;
 namespace ASM_DB_Final
 {
     public partial class Product_Management : Form
-    {
-        private DataAccess db = new DataAccess();
 
-        // Tên DataGridView: dgvProducts (Giả định)
-        // Tên TextBoxes: txtID, txtName, txtPrice, txtStatus, txtTitle (Giả định)
+
+    {
+        string connectionString = "Server=DESKTOP-TD5V49V\\MSSQLSERVER01;Database=SE08201_Bookstore;Integrated Security=True;";
 
         public Product_Management()
         {
             InitializeComponent();
-            this.Load += new EventHandler(Product_Management_Load);
-            // Gán sự kiện CellClick cho DataGridView (DataGridView lớn màu xám)
-            dgvProducts.CellClick += new DataGridViewCellEventHandler(dgvProducts_CellClick);
+
+            LoadData();
+
+            dgvProducts.CellContentClick += new DataGridViewCellEventHandler(dgvProducts_CellContentClick);
+
+            this.Load += Product_Management_Load;
         }
 
         private void Product_Management_Load(object sender, EventArgs e)
@@ -31,173 +33,186 @@ namespace ASM_DB_Final
             LoadData();
         }
 
-        // --- Tải Dữ liệu ---
+        // --- HÀM TẢI DỮ LIỆU LÊN BẢNG ---
         private void LoadData()
         {
             try
             {
-                // dgvProducts là tên Control DataGridView lớn ở dưới
-                dgvProducts.DataSource = db.LoadProducts();
-                dgvProducts.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Lỗi tải dữ liệu. Vui lòng kiểm tra chuỗi kết nối và Database: {ex.Message}", "Lỗi CSDL", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        // --- Các Hàm Hỗ Trợ Giao Diện và Validation ---
-
-        private void ClearFormControls()
-        {
-            txtID.Clear();
-            txtName.Clear();
-            txtPrice.Clear();
-            txtStatus.Clear();
-            txtTitle.Clear();
-            txtID.Focus();
-        }
-
-        private Product GetProductDataFromForm()
-        {
-            if (string.IsNullOrWhiteSpace(txtID.Text) || string.IsNullOrWhiteSpace(txtName.Text) || string.IsNullOrWhiteSpace(txtPrice.Text))
-            {
-                MessageBox.Show("Vui lòng nhập đầy đủ ID, Name và Price.", "Thiếu Thông Tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return null;
-            }
-
-            // Validation cho Price
-            if (!decimal.TryParse(txtPrice.Text, out decimal price))
-            {
-                MessageBox.Show("Price phải là một số hợp lệ.", "Lỗi Định Dạng", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return null;
-            }
-
-            return new Product
-            {
-                ID = txtID.Text.Trim(),
-                Name = txtName.Text.Trim(),
-                Price = price,
-                Status = txtStatus.Text.Trim(),
-                Title = txtTitle.Text.Trim()
-            };
-        }
-
-        // --- Xử Lý Sự Kiện Nút Bấm ---
-
-        // Nút ADD
-        private void btnAdd_Click(object sender, EventArgs e)
-        {
-            Product product = GetProductDataFromForm();
-            if (product == null) return;
-
-            try
-            {
-                if (db.AddProduct(product))
+                using (SqlConnection conn = new SqlConnection("Server=DESKTOP-TD5V49V\\MSSQLSERVER01;Database=SE08201_Bookstore;Integrated Security=True;"))
                 {
-                    MessageBox.Show("Thêm sản phẩm thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    ClearFormControls();
-                    LoadData();
-                }
-                else
-                {
-                    MessageBox.Show("Lỗi: Không thể thêm sản phẩm. Có thể ID đã tồn tại.", "Lỗi CSDL", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    conn.Open();
+                    // BookID -> ID | Title -> Name | PublishYear -> Title (khớp với giao diện của bạn)
+                    string query = "SELECT BookID AS ID, Title AS Name, Price, PublishYear AS Title FROM Books";
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+
+                    // Gán dữ liệu vào bảng dgvProducts
+                    dgvProducts.DataSource = dt;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lỗi khi thêm: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Lỗi kết nối SQL: " + ex.Message);
             }
         }
 
-        // Nút UPDATE
+        
+
+        
+
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            Product product = GetProductDataFromForm();
-            if (product == null) return;
+            if (string.IsNullOrWhiteSpace(txtID.Text))
+            {
+                MessageBox.Show("Vui lòng chọn một dòng từ bảng để sửa!");
+                return;
+            }
+
+            // 2. Ép kiểu số an toàn cho Price để tránh lỗi "Input string format"
+            if (!decimal.TryParse(txtPrice.Text, out decimal priceValue))
+            {
+                MessageBox.Show("Giá tiền không hợp lệ! Vui lòng chỉ nhập số.");
+                return;
+            }
 
             try
             {
-                if (db.UpdateProduct(product))
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    MessageBox.Show("Cập nhật sản phẩm thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    ClearFormControls();
-                    LoadData();
-                }
-                else
-                {
-                    MessageBox.Show("Lỗi: Không tìm thấy ID để cập nhật.", "Lỗi CSDL", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    conn.Open();
+                    // Lệnh SQL cập nhật bảng Books
+                    // Chú ý: Cột năm xuất bản trong SQL của bạn là PublishYear
+                    string query = "UPDATE Books SET Title=@name, Price=@price, PublishYear=@year WHERE BookID=@id";
+
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@id", txtID.Text);
+                    cmd.Parameters.AddWithValue("@name", txtName.Text);
+                    cmd.Parameters.AddWithValue("@price", priceValue);
+                    cmd.Parameters.AddWithValue("@year", txtTitle.Text);
+
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    if (rowsAffected > 0)
+                    {
+                        MessageBox.Show("Cập nhật dữ liệu thành công!");
+                        LoadData(); // Tải lại bảng để thấy thay đổi
+                    }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lỗi khi cập nhật: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Lỗi hệ thống khi sửa: " + ex.Message);
             }
         }
 
-        // Nút DELETE
         private void btnDelete_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtID.Text))
             {
-                MessageBox.Show("Vui lòng nhập ID sản phẩm cần xóa.", "Thiếu ID", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng nhập hoặc chọn ID cần xóa!");
                 return;
             }
 
-            DialogResult confirm = MessageBox.Show($"Bạn có chắc chắn muốn xóa sản phẩm có ID: {txtID.Text}?", "Xác nhận Xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult confirm = MessageBox.Show("Bạn có chắc chắn muốn xóa sách có ID: " + txtID.Text + "?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (confirm == DialogResult.Yes)
             {
                 try
                 {
-                    if (db.DeleteProduct(txtID.Text.Trim()))
+                    using (SqlConnection conn = new SqlConnection(connectionString))
                     {
-                        MessageBox.Show("Xóa sản phẩm thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        ClearFormControls();
-                        LoadData();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Lỗi: Không tìm thấy ID để xóa.", "Lỗi CSDL", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        conn.Open();
+                        // Phải dùng đúng tên cột là BookID và tên bảng là Books
+                        string query = "DELETE FROM Books WHERE BookID = @id";
+
+                        SqlCommand cmd = new SqlCommand(query, conn);
+                        cmd.Parameters.AddWithValue("@id", txtID.Text.Trim());
+
+                        int result = cmd.ExecuteNonQuery();
+
+                        if (result > 0)
+                        {
+                            MessageBox.Show("Xóa thành công!");
+                            LoadData(); // Tải lại bảng dgv để cập nhật danh sách
+                            ClearForm(); // Xóa trắng các ô nhập liệu
+                        }
+                        else
+                        {
+                            MessageBox.Show("Không tìm thấy ID này trong hệ thống!");
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Lỗi khi xóa: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    // Nếu có lỗi khóa ngoại (Foreign Key), nó sẽ báo ở đây
+                    MessageBox.Show("Lỗi khi xóa: " + ex.Message);
                 }
             }
+
         }
 
-        // Nút REFRESH
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            ClearFormControls();
+            ClearForm();
             LoadData();
         }
 
-        // Nút EXIT
-        private void btnExit_Click(object sender, EventArgs e)
+        private void ClearForm()
         {
-            this.Close();
+            txtID.Clear();
+            txtName.Clear();
+            txtPrice.Clear();
+            txt.Clear();
+            txtTitle.Clear();
         }
 
-        // --- Xử Lý DataGridView ---
-
-        // Sự kiện khi click vào một hàng trong DataGridView
-        private void dgvProducts_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void dgvProducts_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
-                DataGridViewRow row = this.dgvProducts.Rows[e.RowIndex];
-
-                // Điền dữ liệu từ hàng được chọn vào các TextBox.
-                // Thứ tự cells[] phải khớp với thứ tự cột trong câu lệnh SELECT của LoadProducts()
-                txtID.Text = row.Cells["ID"].Value?.ToString();
-                txtName.Text = row.Cells["Name"].Value?.ToString();
-                txtPrice.Text = row.Cells["Price"].Value?.ToString();
-                txtStatus.Text = row.Cells["Status"].Value?.ToString();
-                txtTitle.Text = row.Cells["Title"].Value?.ToString();
+                DataGridViewRow row = dgvProducts.Rows[e.RowIndex];
+                txtID.Text = row.Cells["ID"].Value.ToString();
+                txtName.Text = row.Cells["Name"].Value.ToString();
+                txtPrice.Text = row.Cells["Price"].Value.ToString();
+                
+                txtTitle.Text = row.Cells["Title"].Value.ToString();
             }
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            AdminDashboard cusForm = new AdminDashboard();
+            this.Hide();
+            cusForm.ShowDialog();
+            this.Show();
+        }
+
+        private void btnAdd_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "INSERT INTO Books (BookID, Title, Price, PublishYear) VALUES (@id, @name, @price, @year)";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@id", txtID.Text);
+                    cmd.Parameters.AddWithValue("@name", txtName.Text);
+                    cmd.Parameters.AddWithValue("@price", decimal.Parse(txtPrice.Text));
+
+                    cmd.Parameters.AddWithValue("@year", txtTitle.Text); // PublishYear từ SQL tương ứng txtTitle
+
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Thêm sản phẩm thành công!");
+                    LoadData();
+                    ClearForm();
+                }
+            }
+            catch (Exception ex) { MessageBox.Show("Lỗi khi thêm: " + ex.Message); }
         }
     }
 }
+    
+
+

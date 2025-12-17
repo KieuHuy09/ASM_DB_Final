@@ -32,7 +32,6 @@
             this.btnAuthorsManagement = new System.Windows.Forms.Button();
             this.btnProductManagement = new System.Windows.Forms.Button();
             this.btnCustomerManagement = new System.Windows.Forms.Button();
-            this.btnUserManagement = new System.Windows.Forms.Button();
             this.btnWarehouseDashboard = new System.Windows.Forms.Button();
             this.btnDashboard = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -45,6 +44,7 @@
             this.btnLogout.TabIndex = 9;
             this.btnLogout.Text = "Logout";
             this.btnLogout.UseVisualStyleBackColor = true;
+            this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click_1);
             // 
             // btnAuthorsManagement
             // 
@@ -54,6 +54,7 @@
             this.btnAuthorsManagement.TabIndex = 8;
             this.btnAuthorsManagement.Text = "Authors Management";
             this.btnAuthorsManagement.UseVisualStyleBackColor = true;
+            this.btnAuthorsManagement.Click += new System.EventHandler(this.btnAuthorsManagement_Click);
             // 
             // btnProductManagement
             // 
@@ -63,28 +64,21 @@
             this.btnProductManagement.TabIndex = 7;
             this.btnProductManagement.Text = "Product Management";
             this.btnProductManagement.UseVisualStyleBackColor = true;
+            this.btnProductManagement.Click += new System.EventHandler(this.btnProductManagement_Click_1);
             // 
             // btnCustomerManagement
             // 
-            this.btnCustomerManagement.Location = new System.Drawing.Point(332, 46);
+            this.btnCustomerManagement.Location = new System.Drawing.Point(210, 37);
             this.btnCustomerManagement.Name = "btnCustomerManagement";
             this.btnCustomerManagement.Size = new System.Drawing.Size(135, 74);
             this.btnCustomerManagement.TabIndex = 6;
             this.btnCustomerManagement.Text = "Customer Management";
             this.btnCustomerManagement.UseVisualStyleBackColor = true;
-            // 
-            // btnUserManagement
-            // 
-            this.btnUserManagement.Location = new System.Drawing.Point(92, 49);
-            this.btnUserManagement.Name = "btnUserManagement";
-            this.btnUserManagement.Size = new System.Drawing.Size(134, 71);
-            this.btnUserManagement.TabIndex = 5;
-            this.btnUserManagement.Text = "User Management";
-            this.btnUserManagement.UseVisualStyleBackColor = true;
+            this.btnCustomerManagement.Click += new System.EventHandler(this.btnCustomerManagement_Click);
             // 
             // btnWarehouseDashboard
             // 
-            this.btnWarehouseDashboard.Location = new System.Drawing.Point(564, 46);
+            this.btnWarehouseDashboard.Location = new System.Drawing.Point(446, 37);
             this.btnWarehouseDashboard.Name = "btnWarehouseDashboard";
             this.btnWarehouseDashboard.Size = new System.Drawing.Size(144, 74);
             this.btnWarehouseDashboard.TabIndex = 10;
@@ -106,14 +100,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(797, 445);
             this.Controls.Add(this.btnDashboard);
             this.Controls.Add(this.btnWarehouseDashboard);
             this.Controls.Add(this.btnLogout);
             this.Controls.Add(this.btnAuthorsManagement);
             this.Controls.Add(this.btnProductManagement);
             this.Controls.Add(this.btnCustomerManagement);
-            this.Controls.Add(this.btnUserManagement);
             this.Name = "AdminDashboard";
             this.Text = "AdminDashboard";
             this.ResumeLayout(false);
@@ -126,7 +119,6 @@
         private System.Windows.Forms.Button btnAuthorsManagement;
         private System.Windows.Forms.Button btnProductManagement;
         private System.Windows.Forms.Button btnCustomerManagement;
-        private System.Windows.Forms.Button btnUserManagement;
         private System.Windows.Forms.Button btnWarehouseDashboard;
         private System.Windows.Forms.Button btnDashboard;
     }

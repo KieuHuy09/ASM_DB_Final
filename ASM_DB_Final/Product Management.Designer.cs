@@ -30,7 +30,7 @@
         {
             this.txtTitle = new System.Windows.Forms.TextBox();
             this.btnExit = new System.Windows.Forms.Button();
-            this.txtStatus = new System.Windows.Forms.TextBox();
+            this.txt = new System.Windows.Forms.TextBox();
             this.txtPrice = new System.Windows.Forms.TextBox();
             this.txtID = new System.Windows.Forms.TextBox();
             this.txtName = new System.Windows.Forms.TextBox();
@@ -43,7 +43,7 @@
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnUpdate = new System.Windows.Forms.Button();
-            this.btnAdd = new System.Windows.Forms.Button();
+            this.btnAddNewProduct = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProducts)).BeginInit();
             this.SuspendLayout();
             // 
@@ -62,13 +62,14 @@
             this.btnExit.TabIndex = 25;
             this.btnExit.Text = "Exit";
             this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
-            // txtStatus
+            // txt
             // 
-            this.txtStatus.Location = new System.Drawing.Point(670, 94);
-            this.txtStatus.Name = "txtStatus";
-            this.txtStatus.Size = new System.Drawing.Size(135, 22);
-            this.txtStatus.TabIndex = 21;
+            this.txt.Location = new System.Drawing.Point(670, 94);
+            this.txt.Name = "txt";
+            this.txt.Size = new System.Drawing.Size(135, 22);
+            this.txt.TabIndex = 21;
             // 
             // txtPrice
             // 
@@ -145,6 +146,7 @@
             this.dgvProducts.RowTemplate.Height = 24;
             this.dgvProducts.Size = new System.Drawing.Size(1140, 230);
             this.dgvProducts.TabIndex = 15;
+            this.dgvProducts.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvProducts_CellContentClick);
             // 
             // btnRefresh
             // 
@@ -154,6 +156,7 @@
             this.btnRefresh.TabIndex = 14;
             this.btnRefresh.Text = "Refresh";
             this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // btnDelete
             // 
@@ -163,6 +166,7 @@
             this.btnDelete.TabIndex = 13;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnUpdate
             // 
@@ -172,15 +176,17 @@
             this.btnUpdate.TabIndex = 12;
             this.btnUpdate.Text = "Update";
             this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
-            // btnAdd
+            // btnAddNewProduct
             // 
-            this.btnAdd.Location = new System.Drawing.Point(179, 396);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(75, 23);
-            this.btnAdd.TabIndex = 11;
-            this.btnAdd.Text = "Add";
-            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAddNewProduct.Location = new System.Drawing.Point(179, 396);
+            this.btnAddNewProduct.Name = "btnAddNewProduct";
+            this.btnAddNewProduct.Size = new System.Drawing.Size(75, 23);
+            this.btnAddNewProduct.TabIndex = 11;
+            this.btnAddNewProduct.Text = "Add";
+            this.btnAddNewProduct.UseVisualStyleBackColor = true;
+            this.btnAddNewProduct.Click += new System.EventHandler(this.btnAdd_Click_1);
             // 
             // Product_Management
             // 
@@ -189,7 +195,7 @@
             this.ClientSize = new System.Drawing.Size(1316, 766);
             this.Controls.Add(this.txtTitle);
             this.Controls.Add(this.btnExit);
-            this.Controls.Add(this.txtStatus);
+            this.Controls.Add(this.txt);
             this.Controls.Add(this.txtPrice);
             this.Controls.Add(this.txtID);
             this.Controls.Add(this.txtName);
@@ -202,7 +208,7 @@
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnUpdate);
-            this.Controls.Add(this.btnAdd);
+            this.Controls.Add(this.btnAddNewProduct);
             this.Name = "Product_Management";
             this.Text = "Product_Management";
             ((System.ComponentModel.ISupportInitialize)(this.dgvProducts)).EndInit();
@@ -215,7 +221,7 @@
 
         private System.Windows.Forms.TextBox txtTitle;
         private System.Windows.Forms.Button btnExit;
-        private System.Windows.Forms.TextBox txtStatus;
+        private System.Windows.Forms.TextBox txt;
         private System.Windows.Forms.TextBox txtPrice;
         private System.Windows.Forms.TextBox txtID;
         private System.Windows.Forms.TextBox txtName;
@@ -228,6 +234,6 @@
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnUpdate;
-        private System.Windows.Forms.Button btnAdd;
+        private System.Windows.Forms.Button btnAddNewProduct;
     }
 }
