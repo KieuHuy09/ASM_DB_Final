@@ -14,7 +14,7 @@ namespace ASM_DB_Final
     public partial class Form1 : Form
     {
         SqlConnection conn;
-        public Login()
+        public Form1()
         {
             InitializeComponent();
             conn = new SqlConnection("Server = LAPTOP-GDG92V4B; Database = SE08201_ProductManagement; integrated security = true ");
@@ -61,7 +61,7 @@ namespace ASM_DB_Final
                 {
                     MessageBox.Show(this, "Welcome Sales staff", "Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     this.Hide();
-                    DashBoard saleDashboard = new DashBoard();
+                    Dashboard saleDashboard = new Dashboard();
                     saleDashboard.ShowDialog();
                     this.Dispose();
                 }
