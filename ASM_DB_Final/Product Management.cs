@@ -182,10 +182,7 @@ namespace ASM_DB_Final
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            AdminDashboard cusForm = new AdminDashboard();
-            this.Hide();
-            cusForm.ShowDialog();
-            this.Show();
+            this.Close();
         }
 
         private void btnAdd_Click_1(object sender, EventArgs e)

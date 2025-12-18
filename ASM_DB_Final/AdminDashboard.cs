@@ -13,38 +13,72 @@ namespace ASM_DB_Final
     public partial class AdminDashboard : Form
     {
         // Biến để lưu quyền hạn (Admin/Staff) nhận từ form Login
-        private string currentRole;
+        string userRole = "";
 
         // Sửa lại Constructor để nhận tham số role
         public AdminDashboard(string role)
         {
             InitializeComponent();
-            this.currentRole = role;
+            this.userRole = role.ToLower();
         }
 
         public AdminDashboard()
         {
             InitializeComponent();
+            
         }
+
+
+
+
 
         // Sự kiện khi Form Main tải lên
-        private void Main_Load(object sender, EventArgs e)
+        private void AdminDashboard_Load(object sender, EventArgs e)
         {
-            // --- PHÂN QUYỀN DỰA TRÊN USE CASE ---
-            // Nếu là Staff (Nhân viên), ẩn chức năng quản lý User (vì Use Case Manage User chỉ nối với Admin)
-            if (currentRole == "Staff")
-            {
-                //btnAuthorManagement.Enabled = false; // Hoặc .Visible = false để ẩn luôn
-            }
+            
+            string check = userRole.ToLower().Trim();
 
-            // Hiển thị tên người dùng hoặc quyền hạn lên tiêu đề form (Optional)
-            this.Text = "Hệ thống quản lý nhà sách - Xin chào: " + currentRole;
+            // CHỈ HIỆN nút theo đúng vai trò, còn lại ẨN HẾT
+            if (check == "admin")
+            {
+                SetAllButtons(true); // Hiện tất cả
+            }
+            else if (check == "user") // Tài khoản Nguyen Van Min
+            {
+                SetAllButtons(false); // Ẩn hết trước
+                btnCustomerManagement.Visible = true; // Hiện lại cái cần
+                btnProductManagement.Visible = true;
+                btnSale.Visible = true;
+            }
+            else if (check == "test") // Tài khoản warehouse
+            {
+                SetAllButtons(false);
+                btnWarehouseDashboard.Visible = true;
+            }
         }
 
-        
+        // Hàm phụ trợ để ẩn/hiện nhanh (đỡ phải viết từng dòng .Visible)
+        private void SetAllButtons(bool status)
+        {
+            btnCustomerManagement.Visible = status;
+            btnAuthorsManagement.Visible = status;
+            btnProductManagement.Visible = status;
+            btnWarehouseDashboard.Visible = status;
+            btnDashboard.Visible = status;
+            btnOrder.Visible = status;
+            btnCreate.Visible = status;
+            btnSale.Visible = status;
+        }
 
-        
-        
+
+
+
+
+
+
+
+
+
 
         // 5. Nút LOGOUT (Đăng xuất)
         private void btnLogout_Click(object sender, EventArgs e)
@@ -54,17 +88,17 @@ namespace ASM_DB_Final
 
         private void btnWarehouseDashboard_Click(object sender, EventArgs e)
         {
-            WarehouseDashboard cusForm = new WarehouseDashboard();
+            WarehouseDashboard f = new WarehouseDashboard();
             this.Hide();
-            cusForm.ShowDialog();
+            f.ShowDialog();
             this.Show();
         }
 
         private void btnDashboard_Click(object sender, EventArgs e)
         {
-            Dashboard cusForm = new Dashboard();
+            Dashboard f = new Dashboard();
             this.Hide();
-            cusForm.ShowDialog();
+            f.ShowDialog();
             this.Show();
         }
 
@@ -80,42 +114,58 @@ namespace ASM_DB_Final
         {
 
 
-            Author_Management empForm = new Author_Management();
+            Author_Management f = new Author_Management();
             this.Hide();
-            empForm.ShowDialog();
+            f.ShowDialog();
             this.Show();
         }
 
         private void btnCustomerManagement_Click(object sender, EventArgs e)
         {
-            Customer_Management cusForm = new Customer_Management();
+            Customer_Management f = new Customer_Management();
             this.Hide();
-            cusForm.ShowDialog();
+            f.ShowDialog();
             this.Show();
         }
 
         private void btnProductManagement_Click_1(object sender, EventArgs e)
         {
-            Product_Management cusForm = new Product_Management();
+            Product_Management f = new Product_Management();
             this.Hide();
-            cusForm.ShowDialog();
+            f.ShowDialog();
             this.Show();
         }
 
         private void btnLogout_Click_1(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show("Bạn có muốn đăng xuất");
-            Form1 cusForm = new Form1();
+            Form1 Login = new Form1();
             this.Hide();
-            cusForm.ShowDialog();
+            Login.ShowDialog();
             this.Show();
         }
 
         private void btnOrder_Click(object sender, EventArgs e)
         {
-            Order cusForm = new Order();
+            Order f = new Order();
             this.Hide();
-            cusForm.ShowDialog();
+            f.ShowDialog();
+            this.Show();
+        }
+
+        private void btnCreate_Click(object sender, EventArgs e)
+        {
+            Account_Management f = new Account_Management();
+            this.Hide();
+                        f.ShowDialog();
+            this.Show();
+        }
+
+        private void btnSale_Click(object sender, EventArgs e)
+        {
+            Sale_Management f = new Sale_Management();
+            this.Hide();
+            f.ShowDialog();
             this.Show();
         }
     }

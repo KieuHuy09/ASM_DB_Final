@@ -35,6 +35,8 @@
             this.btnWarehouseDashboard = new System.Windows.Forms.Button();
             this.btnDashboard = new System.Windows.Forms.Button();
             this.btnOrder = new System.Windows.Forms.Button();
+            this.btnCreate = new System.Windows.Forms.Button();
+            this.btnSale = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnLogout
@@ -107,11 +109,33 @@
             this.btnOrder.UseVisualStyleBackColor = true;
             this.btnOrder.Click += new System.EventHandler(this.btnOrder_Click);
             // 
+            // btnCreate
+            // 
+            this.btnCreate.Location = new System.Drawing.Point(153, 102);
+            this.btnCreate.Name = "btnCreate";
+            this.btnCreate.Size = new System.Drawing.Size(134, 76);
+            this.btnCreate.TabIndex = 13;
+            this.btnCreate.Text = "Create Account";
+            this.btnCreate.UseVisualStyleBackColor = true;
+            this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
+            // 
+            // btnSale
+            // 
+            this.btnSale.Location = new System.Drawing.Point(293, 102);
+            this.btnSale.Name = "btnSale";
+            this.btnSale.Size = new System.Drawing.Size(135, 76);
+            this.btnSale.TabIndex = 14;
+            this.btnSale.Text = "Sale Managgement";
+            this.btnSale.UseVisualStyleBackColor = true;
+            this.btnSale.Click += new System.EventHandler(this.btnSale_Click);
+            // 
             // AdminDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(797, 445);
+            this.Controls.Add(this.btnSale);
+            this.Controls.Add(this.btnCreate);
             this.Controls.Add(this.btnOrder);
             this.Controls.Add(this.btnDashboard);
             this.Controls.Add(this.btnWarehouseDashboard);
@@ -121,6 +145,7 @@
             this.Controls.Add(this.btnCustomerManagement);
             this.Name = "AdminDashboard";
             this.Text = "AdminDashboard";
+            this.Load += new System.EventHandler(this.AdminDashboard_Load);
             this.ResumeLayout(false);
 
         }
@@ -134,5 +159,7 @@
         private System.Windows.Forms.Button btnWarehouseDashboard;
         private System.Windows.Forms.Button btnDashboard;
         private System.Windows.Forms.Button btnOrder;
+        private System.Windows.Forms.Button btnCreate;
+        private System.Windows.Forms.Button btnSale;
     }
 }

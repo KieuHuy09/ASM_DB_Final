@@ -77,15 +77,7 @@ namespace ASM_DB_Final
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("Bạn có chắc muốn thoát Dashboard không?", "Xác nhận", MessageBoxButtons.YesNo);
-            if (result == DialogResult.Yes)
-            {
-
-                AdminDashboard cusForm = new AdminDashboard();
-                this.Hide();
-                cusForm.ShowDialog();
-                this.Show();
-            }
+            this.Close();
         }
 
         private void button1_Click(object sender, EventArgs e)

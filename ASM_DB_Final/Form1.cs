@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
 
@@ -34,43 +35,51 @@ namespace ASM_DB_Final
 
         private void btnLogin_Click_1(object sender, EventArgs e)
         {
-            // Lấy dữ liệu từ TextBox
             string user = txtUsername.Text;
             string pass = txtPassword.Text;
 
-            // 1. Kiểm tra tài khoản ADMIN
-            if (user == "admin" && pass == "123")
+            if (string.IsNullOrEmpty(user) || string.IsNullOrEmpty(pass))
             {
-                MessageBox.Show("Chào mừng Quản trị viên!", "Thông báo");
-                this.Hide();
-                // Mở AdminDashboard
-                AdminDashboard adminForm = new AdminDashboard("Admin");
-                adminForm.ShowDialog();
-                this.Close();
+                MessageBox.Show("Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu!");
+                return;
             }
-            // 2. Kiểm tra tài khoản NHÂN VIÊN BÁN HÀNG (User)
-            else if (user == "staff" && pass == "123")
+
+            try
             {
-                MessageBox.Show("Chào mừng Nhân viên bán hàng!", "Thông báo");
-                this.Hide();
-                // Mở Dashboard (Form nhân viên)
-                Dashboard staffForm = new Dashboard();
-                staffForm.ShowDialog();
-                this.Close();
+                if (conn.State == ConnectionState.Closed) conn.Open();
+
+                // Truy vấn lấy quyền (user_role) dựa vào tài khoản mật khẩu
+                string sql = "SELECT user_role FROM tblAccounts WHERE username = @user AND user_password = @pass";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@user", user);
+                cmd.Parameters.AddWithValue("@pass", pass);
+
+                object result = cmd.ExecuteScalar();
+
+                if (result != null)
+                {
+                    // Lấy role và xóa khoảng trắng thừa để so sánh chính xác 100%
+                    string role = result.ToString().Trim();
+                    MessageBox.Show($"Đăng nhập thành công! Quyền hạn: {role}", "Thông báo");
+
+                    this.Hide();
+                    // TRUYỀN BIẾN role VÀO ĐÂY
+                    AdminDashboard mainForm = new AdminDashboard(role);
+                    mainForm.ShowDialog();
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Sai tên đăng nhập hoặc mật khẩu!", "Lỗi đăng nhập", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-            // 3. Kiểm tra tài khoản QUẢN LÝ KHO (Test)
-            else if (user == "warehouse" && pass == "123")
+            catch (Exception ex)
             {
-                MessageBox.Show("Chào mừng Quản lý kho!", "Thông báo");
-                this.Hide();
-                // Mở WarehouseDashboard
-                WarehouseDashboard storageForm = new WarehouseDashboard();
-                storageForm.ShowDialog();
-                this.Close();
+                MessageBox.Show("Lỗi kết nối: " + ex.Message);
             }
-            else
+            finally
             {
-                MessageBox.Show("Sai tên đăng nhập hoặc mật khẩu!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                conn.Close();
             }
         }
     }

@@ -103,10 +103,7 @@ namespace ASM_DB_Final
         }
         private void btnExit_Click(object sender, EventArgs e)
         {
-            AdminDashboard cusForm = new AdminDashboard();
-            this.Hide();
-            cusForm.ShowDialog();
-            this.Show();
+            this.Close();
         }
 
         private void dgvAuthors_CellContentClick(object sender, DataGridViewCellEventArgs e)
