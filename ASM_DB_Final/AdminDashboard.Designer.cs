@@ -34,6 +34,7 @@
             this.btnCustomerManagement = new System.Windows.Forms.Button();
             this.btnWarehouseDashboard = new System.Windows.Forms.Button();
             this.btnDashboard = new System.Windows.Forms.Button();
+            this.btnOrder = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnLogout
@@ -48,7 +49,7 @@
             // 
             // btnAuthorsManagement
             // 
-            this.btnAuthorsManagement.Location = new System.Drawing.Point(92, 168);
+            this.btnAuthorsManagement.Location = new System.Drawing.Point(153, 12);
             this.btnAuthorsManagement.Name = "btnAuthorsManagement";
             this.btnAuthorsManagement.Size = new System.Drawing.Size(134, 74);
             this.btnAuthorsManagement.TabIndex = 8;
@@ -58,7 +59,7 @@
             // 
             // btnProductManagement
             // 
-            this.btnProductManagement.Location = new System.Drawing.Point(332, 168);
+            this.btnProductManagement.Location = new System.Drawing.Point(293, 12);
             this.btnProductManagement.Name = "btnProductManagement";
             this.btnProductManagement.Size = new System.Drawing.Size(135, 74);
             this.btnProductManagement.TabIndex = 7;
@@ -68,7 +69,7 @@
             // 
             // btnCustomerManagement
             // 
-            this.btnCustomerManagement.Location = new System.Drawing.Point(210, 37);
+            this.btnCustomerManagement.Location = new System.Drawing.Point(12, 12);
             this.btnCustomerManagement.Name = "btnCustomerManagement";
             this.btnCustomerManagement.Size = new System.Drawing.Size(135, 74);
             this.btnCustomerManagement.TabIndex = 6;
@@ -78,7 +79,7 @@
             // 
             // btnWarehouseDashboard
             // 
-            this.btnWarehouseDashboard.Location = new System.Drawing.Point(446, 37);
+            this.btnWarehouseDashboard.Location = new System.Drawing.Point(434, 12);
             this.btnWarehouseDashboard.Name = "btnWarehouseDashboard";
             this.btnWarehouseDashboard.Size = new System.Drawing.Size(144, 74);
             this.btnWarehouseDashboard.TabIndex = 10;
@@ -88,7 +89,7 @@
             // 
             // btnDashboard
             // 
-            this.btnDashboard.Location = new System.Drawing.Point(564, 165);
+            this.btnDashboard.Location = new System.Drawing.Point(584, 12);
             this.btnDashboard.Name = "btnDashboard";
             this.btnDashboard.Size = new System.Drawing.Size(144, 77);
             this.btnDashboard.TabIndex = 11;
@@ -96,11 +97,22 @@
             this.btnDashboard.UseVisualStyleBackColor = true;
             this.btnDashboard.Click += new System.EventHandler(this.btnDashboard_Click);
             // 
+            // btnOrder
+            // 
+            this.btnOrder.Location = new System.Drawing.Point(12, 102);
+            this.btnOrder.Name = "btnOrder";
+            this.btnOrder.Size = new System.Drawing.Size(135, 76);
+            this.btnOrder.TabIndex = 12;
+            this.btnOrder.Text = "Order";
+            this.btnOrder.UseVisualStyleBackColor = true;
+            this.btnOrder.Click += new System.EventHandler(this.btnOrder_Click);
+            // 
             // AdminDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(797, 445);
+            this.Controls.Add(this.btnOrder);
             this.Controls.Add(this.btnDashboard);
             this.Controls.Add(this.btnWarehouseDashboard);
             this.Controls.Add(this.btnLogout);
@@ -121,5 +133,6 @@
         private System.Windows.Forms.Button btnCustomerManagement;
         private System.Windows.Forms.Button btnWarehouseDashboard;
         private System.Windows.Forms.Button btnDashboard;
+        private System.Windows.Forms.Button btnOrder;
     }
 }

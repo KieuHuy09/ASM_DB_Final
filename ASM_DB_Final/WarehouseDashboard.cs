@@ -90,5 +90,13 @@ namespace ASM_DB_Final
             cusForm.ShowDialog();
             this.Show();
         }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            Form1 cusForm = new Form1();
+            this.Hide();
+            cusForm.ShowDialog();
+            this.Show();
+        }
     }
 }

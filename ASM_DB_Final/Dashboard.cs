@@ -87,5 +87,13 @@ namespace ASM_DB_Final
                 this.Show();
             }
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Form1 cusForm = new Form1();
+            this.Hide();
+            cusForm.ShowDialog();
+            this.Show();
+        }
     }
 }

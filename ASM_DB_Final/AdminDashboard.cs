@@ -70,9 +70,9 @@ namespace ASM_DB_Final
 
         private void btnUserManagement_Click_1(object sender, EventArgs e)
         {
-            User_Management empForm = new User_Management();
+           // User_Management empForm = new User_Management();
             this.Hide();
-            empForm.ShowDialog();
+            //empForm.ShowDialog();
             this.Show();
         }
 
@@ -106,6 +106,14 @@ namespace ASM_DB_Final
         {
             DialogResult result = MessageBox.Show("Bạn có muốn đăng xuất");
             Form1 cusForm = new Form1();
+            this.Hide();
+            cusForm.ShowDialog();
+            this.Show();
+        }
+
+        private void btnOrder_Click(object sender, EventArgs e)
+        {
+            Order cusForm = new Order();
             this.Hide();
             cusForm.ShowDialog();
             this.Show();
