@@ -161,7 +161,7 @@ namespace ASM_DB_Final
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "UPDATE Customers SET CusName=@name, PhoneNumber=@phone, Address=@address, Email=@email WHERE CusID=@id";
+                    string query = "UPDATE Customers SET CustomerName=@name, PhoneNumber=@phone, Address=@address, Email=@email WHERE CustomerID=@id";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@id", txtCusID.Text);
                     cmd.Parameters.AddWithValue("@name", txtCusName.Text);
